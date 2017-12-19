@@ -142,7 +142,6 @@ func (l *LLDPD) Listen() error {
 				pconn := l.listeners[msg.ifi.Index]
 				l.listenersLock.RUnlock()
 
-				msg.addr.HardwareAddr = []byte{0x01, 0x80, 0xc2, 0x00, 0x00, 0x0e}
 				b := l.packetFor(msg)
 
 				_, err := pconn.conn.WriteTo(b, msg.addr)
