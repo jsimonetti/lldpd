@@ -30,6 +30,9 @@ func filterFn(ifi *net.Interface) bool {
 }
 
 func portDescFn(ifi *net.Interface) string {
+	if ifi == nil {
+		return ""
+	}
 	if strings.HasPrefix(ifi.Name, "enp") {
 		return "wired"
 	}
