@@ -85,7 +85,7 @@ func (l *LLDPD) ListenOn(ifi *net.Interface) {
 	l.listenersLock.Lock()
 	defer l.listenersLock.Unlock()
 	if _, ok := l.listeners[ifi.Index]; !ok {
-		conn, err := raw.ListenPacket(ifi, uint16(lldp.EtherType))
+		conn, err := raw.ListenPacket(ifi, uint16(lldp.EtherType), &raw.Config{})
 		if err != nil {
 			l.log.Error("msg", "error listening on interface", "ifname", ifi.Name, "ifindex", ifi.Index, "error", err)
 			return

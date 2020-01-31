@@ -7,6 +7,7 @@ import (
 	"github.com/jsimonetti/rtnetlink"
 	"github.com/mdlayher/netlink"
 	"github.com/pkg/errors"
+	"golang.org/x/sys/unix"
 )
 
 type nlListener struct {
@@ -38,14 +39,14 @@ func (l *nlListener) Start() {
 
 // Listen will start the listener loop
 func (l *nlListener) Listen() error {
-	nl, err := rtnetlink.Dial(&netlink.Config{Groups: rtnetlink.RTNLGRP_LINK})
+	nl, err := rtnetlink.Dial(&netlink.Config{Groups: unix.RTNLGRP_LINK})
 	if err != nil {
 		errors.Wrap(err, "could not dial rtnetlink")
 	}
 
 	//send request for current list of interfaces
 	req := &rtnetlink.LinkMessage{}
-	nl.Send(req, rtnetlink.RTM_GETLINK, netlink.HeaderFlagsRequest|netlink.HeaderFlagsDump)
+	nl.Send(req, unix.RTM_GETLINK, netlink.Request|netlink.Dump)
 
 	for {
 		msgs, omsgs, err := nl.Receive()
@@ -65,7 +66,7 @@ func (l *nlListener) Listen() error {
 					continue
 				}
 
-				if omsgs[i].Header.Type == rtnetlink.RTM_NEWLINK {
+				if omsgs[i].Header.Type == unix.RTM_NEWLINK {
 					if _, ok := l.list[m.Index]; !ok {
 
 						link, _ := net.InterfaceByIndex(int(m.Index))
@@ -79,7 +80,7 @@ func (l *nlListener) Listen() error {
 					}
 					continue
 				}
-				if omsgs[i].Header.Type == rtnetlink.RTM_DELLINK {
+				if omsgs[i].Header.Type == unix.RTM_DELLINK {
 					if _, ok := l.list[m.Index]; ok {
 
 						l.Messages <- &linkMessage{
