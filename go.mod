@@ -10,5 +10,5 @@ require (
 	github.com/mdlayher/raw v0.0.0-20191009151244-50f2db8cc065
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.4.2
-	golang.org/x/sys v0.0.0-20191008105621-543471e840be
+	golang.org/x/sys v0.1.0
 )
