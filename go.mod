@@ -9,6 +9,6 @@ require (
 	github.com/mdlayher/netlink v1.0.0
 	github.com/mdlayher/raw v0.0.0-20191009151244-50f2db8cc065
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.4.2
+	github.com/sirupsen/logrus v1.8.3
 	golang.org/x/sys v0.1.0
 )
